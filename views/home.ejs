@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%-  include('./partials/head.ejs')  %>
+    <title>Home pages</title>
+    <style>
+        body{
+            background: #1A2980;  /* fallback for old browsers */
+     background: -webkit-linear-gradient(to right, #26D0CE, #1A2980);  /* Chrome 10-25, Safari 5.1-6 */
+     background: linear-gradient(to right, #26D0CE, #1A2980); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
+        .card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden; /* Ensures image corners are rounded */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .btn-primary {
+            background-color: #1A2980;
+            border-color: #1A2980;
+        }
+        .btn-primary:hover {
+            background-color: #26D0CE;
+            border-color: #26D0CE;
+        }
+    </style>
+</head>
+<body>
+    <%-  include('./partials/nav.ejs')  %>
+    <div class="container mt-4">
+        <div class="row">
+                <% blogs.forEach(blog => { %>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="<%= blog.coverImageUrl %>" class="card-img-top" alt="blog image">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title"><%= blog.title%></h5>
+                                <a href="/blog/<%= blog._id %>" class="btn btn-primary mt-auto">View Blog</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+        </div>
+     </div>
+     
+    <%-include('./partials/scripte.ejs')  %>
+    
+</body>
+</html>
