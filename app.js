@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGO_URL).then((e) => {
     console.log("mongoose Connected");
 })
 app.use(express.urlencoded({extended:false}))
-app.use(express.static(path.join(__dirname, 'public')));
+app.use("public",express.static(path.join(__dirname, 'public')));
 app.use("/user",userRoute);
 app.use("/blog",blogRouter);
 
