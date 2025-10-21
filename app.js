@@ -11,6 +11,7 @@ const {checkForAuthenticationCookie} = require("./middlewares/authentication");
 const user = require("./models/user")
 const Blog  = require("./models/blog");
 const Comment = require("./models/comment")
+const __dirname = path.resolve();
  
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -26,7 +27,7 @@ mongoose.connect(process.env.MONGO_URL).then((e) => {
     console.log("mongoose Connected");
 })
 app.use(express.urlencoded({extended:false}))
-app.use(express.static(path.join(__dirname, 'public')));
+app.use("/public",express.static(path.join(__dirname, 'public')));
 app.use("/user",userRoute);
 app.use("/blog",blogRouter);
 
