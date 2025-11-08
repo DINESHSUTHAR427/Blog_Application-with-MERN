@@ -4,12 +4,16 @@
     <%-  include('./partials/head.ejs')  %>
     <title><%= blog.title %></title>
     <style>
-        body {
-  background-image: url("https://images.unsplash.com/photo-1672679813065-adb4e17e9be0?q=80&w=1585&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); /* your bark image */
-  background-size: cover;   /* fills screen */
-  background-repeat: no-repeat;
-  background-attachment: fixed; /* stays fixed when scrolling */
-}
+        #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color:rgb(0, 0, 0); /* Optional background color */
+     
+      z-index: -1; /* Keep it behind other elements */
+    }
         .blog-container, .comments-container {
             max-width: 1000px;
             margin: 2rem auto;
@@ -96,6 +100,7 @@
 </head>
 <body>
     <%-  include('./partials/nav.ejs')  %>
+    <div id="particles-js"></div>
     <div class="container my-4">
         <div class="blog-container">
             <h1 class="blog-title"><%= blog.title %></h1>
@@ -141,5 +146,7 @@
                 
     </div>
     <%-include('./partials/scripte.ejs')  %>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="/public/particles-config.js"></script>
 </body>
 </html>
