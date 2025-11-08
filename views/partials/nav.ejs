@@ -1,0 +1,141 @@
+<style>
+.navbar-animated-gradient {
+  background: #00416A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #E4E5E6, #00416A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  background-size: 400% 400%;
+  animation: gradient-navbar 15s ease infinite;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes gradient-navbar {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* A modern, modal-like entrance animation for the navbar */
+.navbar {
+    animation: fadeInNavbar 0.8s ease-in-out;
+}
+
+@keyframes fadeInNavbar {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animated RGB background for nav items */
+.navbar-nav .nav-link {
+  position: relative;
+  z-index: 1;
+  border-radius: 8px;
+  margin: 0 2px;
+  padding: 0.5rem 1rem;
+  transition: color 0.4s ease-in-out;
+  overflow: hidden; /* Keep the pseudo-element contained */
+}
+
+/* The animated background layer */
+.navbar-nav .nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  border-radius: 8px;
+  background: linear-gradient(
+    -45deg, 
+    #ef4444, #f97316, #eab308, #84cc16, 
+    #22c55e, #14b8a6, #0ea5e9, #6366f1, 
+    #a855f7, #d946ef, #ef4444
+  );
+  background-size: 400% 400%;
+  animation: rgb-background-anim 10s linear infinite;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+/* On hover/focus/active, show the animated background and change text color */
+.navbar-nav .nav-link:hover::before,
+.navbar-nav .nav-link:focus::before,
+.navbar-nav .nav-link.active::before {
+  opacity: 1;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus,
+.navbar-nav .nav-link.active {
+    color: #fff; /* Make text white for better contrast */
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4); /* Add shadow for readability */
+}
+
+@keyframes rgb-background-anim {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-animated-gradient">
+  <div class="container-fluid">
+    <a class="navbar-brand text-black" href="/">Blogify</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse " id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item ">
+          <a class="nav-link active text-black" aria-current="page" href="/">Home</a>
+        </li>
+        <% if (locals.user) { %>
+         <li class="nav-item">
+          <a class="nav-link text-black" href="/blog/add-new">Add Blog</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-black" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            dinesh suthar
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item " href="/user/logout">Logout</a></li>
+           
+          </ul>
+        </li>
+        <% } else { %>
+           <li class="nav-item">
+          <a class="nav-link text-black" href="/user/signup">SignUp</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link text-black" href="/user/signin">SignIn</a>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<% if (locals.error) { %>
+<div class="alert alert-danger" role="alert">
+  <%= locals.error%>
+</div>
+<% } %>

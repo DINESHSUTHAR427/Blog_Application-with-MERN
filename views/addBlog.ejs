@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <%- include('./partials/head.ejs') %>
+    <title>Add New Blog</title>
+    <style>
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            height: 100vh;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .form-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <%- include('./partials/nav.ejs') %>
+    </div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="form-container">
+                    <h2 class="text-center mb-4">Add New Blog</h2>
+                    <form action="/blog" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label">Name Blog</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="coverImageUrl" class="form-label">Cover Image</label>
+                            <input type="file" class="form-control" id="coverImageUrl" name="coverImageUrl" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="body">Body</label>
+                            <textarea name="body" class="form-control"  id="body" style="height: 100px"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-outline-light">Summit</button>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('./partials/scripte.ejs') %>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%-  include('./partials/head.ejs')  %>
+    <title><%= blog.title %></title>
+    <style>
+        body {
+  background-image: url("https://images.unsplash.com/photo-1672679813065-adb4e17e9be0?q=80&w=1585&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); /* your bark image */
+  background-size: cover;   /* fills screen */
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* stays fixed when scrolling */
+}
+        .blog-container, .comments-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 2rem 3rem;
+            color: white;
+        }
+        .blog-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .author-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        .blog-cover-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 2.5rem;
+        }
+        .blog-body {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #e9ecef;
+        }
+        .blog-body pre {
+            white-space: pre-wrap; /* Allows pre-formatted text to wrap */
+            word-wrap: break-word;   /* Breaks long words if they would overflow */
+            font-family: inherit;
+            color: inherit;
+        }
+        .comments-list {
+            margin-bottom: 2.5rem;
+        }
+        .comment {
+            border-bottom: 1px solid #495057;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .comment:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .comment .author-info {
+            margin-bottom: 0.5rem;
+        }
+        .comment-content {
+            color: #ced4da;
+            padding-left: calc(50px + 1rem); /* Align with author name */
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .blog-container, .comments-container {
+                padding: 1.5rem;
+                margin: 1rem auto;
+            }
+            .blog-title {
+                font-size: 2rem;
+            }
+            .blog-body {
+                font-size: 1rem;
+            }
+            .comment-content {
+                padding-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%-  include('./partials/nav.ejs')  %>
+    <div class="container my-4">
+        <div class="blog-container">
+            <h1 class="blog-title"><%= blog.title %></h1>
+            <% if (blog.coverImageUrl) { %>
+                <img src="<%= blog.coverImageUrl %>" class="blog-cover-image" alt="<%= blog.title %>">
+            <% } %>
+            <div class="author-info">
+                <img src="<%= blog.createBy.userImageUrl %>" class="author-avatar">
+                <div><%= blog.createBy.fullname %></div>
+            </div>
+            <div class="blog-body">
+            <pre><%- blog.body %></pre>
+            </div>
+        </div>
+        <div class="form-container">
+                    
+                    <% if (locals.user) { %>
+                        <h2 class="text-center mb-4" style="color: #ffffff;">Comment For Blog (<%= comments.length %>) </h2>
+
+                        <div class="mb-3">
+                            <label for="text" class="form-label" style="color: azure;">Your Comment</label>
+                            <% comments.forEach(comment => { %>
+                                <div class="author-info">
+                                    <img src="<%= comment.createdBy.userImageUrl %>" class="author-avatar">
+                                    <div><%= comment.createdBy.fullname %></div>
+                                </div>
+                                <p style="color: azure;"><%= comment.content %></p>
+                            <% }) %>
+                        </div>
+                        <form action="/blog/comment/<%= blog._id %>" method="post">
+                        <div class="mb-3">
+                            <label for="text" class="form-label">Comment</label>
+                            <input type="text" class="form-control" name="content" placeholder="Enter Your Comment">
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Summit</button>
+                        </div>
+                    </form>
+                    
+                    <% } %>
+                    
+                </div>
+                
+    </div>
+    <%-include('./partials/scripte.ejs')  %>
+</body>
+</html>
