@@ -1,4 +1,5 @@
 // ...existing code...
+import serverless from "serverless-http";
 import express from "express";
 import dotenv from "dotenv";
 import ejs from "ejs";
@@ -49,7 +50,12 @@ app.get("/", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
+const handler = serverless(app);
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 8000;
+  app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
+}
+
 // ...existing code...
 
+export default handler;
