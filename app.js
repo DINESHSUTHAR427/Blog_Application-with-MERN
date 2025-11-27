@@ -72,7 +72,7 @@ app.use((req,res,next) => {
   next();
 })
 
-module.exports = app
+module.exports = app;
 // const PORT = process.env.PORT || 8000;
 // app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
 
