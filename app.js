@@ -3,6 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import ejs from "ejs";
 import path from "path";
+import { fileURLToPath } from "url";
 import userRoute from "./routes/user.js";
 import blogRouter from "./routes/blog.js";
 import mongoose from "mongoose";
@@ -13,9 +14,10 @@ import Blog from "./models/blog.js";
 import Comment from "./models/comment.js";
 
 dotenv.config();
-const __dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(checkForAuthenticationCookie("token"));
@@ -28,7 +30,8 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 });
 
 app.use(express.urlencoded({ extended: false }));
-app.use("/public", express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
+app.use('/uploads', express.static(path.resolve('./public/uploads')));
 app.use("/user", userRoute);
 app.use("/blog", blogRouter);
 

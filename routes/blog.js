@@ -7,7 +7,7 @@ const Comment = require('../models/comment')
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.resolve(`./public/uploads`))
+    return cb(null, path.resolve(`./public/uploads`))
   },
   filename: function (req, file, cb) {
     const fileName = `${Date.now()}-${file.originalname}`
@@ -26,12 +26,15 @@ router.get('/add-new' , (req,res) => {
 
 router.post('/',upload.single("coverImageUrl"),async(req,res) => {
   try {
+    console.log("multer req.file:", req.file);
+     const coverPath = req.file ? `/uploads/${req.file.filename}` : undefined;
+    console.log("coverPath saved:", coverPath);
     const {title,body} = req.body;
     const blog = await Blog.create({
        title,
        body,
        createBy: req.user._id,
-       coverImageUrl: req.file ? `/uploads/${req.file.filename}` : undefined,
+       coverImageUrl: coverPath,
      })
      return res.redirect(`/blog/${blog._id}`)
   } catch (error) {

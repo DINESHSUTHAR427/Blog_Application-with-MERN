@@ -105,7 +105,7 @@
         <div class="blog-container">
             <h1 class="blog-title"><%= blog.title %></h1>
             <% if (blog.coverImageUrl) { %>
-                <img src="<%= blog.coverImageUrl %>" class="blog-cover-image" alt="<%= blog.title %>">
+                <img src="<%=blog.coverImageUrl %>" class="blog-cover-image" alt="<%= blog.title %>">
             <% } %>
             <div class="author-info">
                 <img src="<%= blog.createBy.userImageUrl %>" class="author-avatar">
@@ -124,8 +124,8 @@
                             <label for="text" class="form-label" style="color: azure;">Your Comment</label>
                             <% comments.forEach(comment => { %>
                                 <div class="author-info">
-                                    <img src="<%= comment.createdBy.userImageUrl %>" class="author-avatar">
-                                    <div><%= comment.createdBy.fullname %></div>
+                                <img src="<%= comment && comment.createdBy && comment.createdBy.userImageUrl ? comment.createdBy.userImageUrl : '/images/default-avatar.png' %>" class="author-avatar" alt="author avatar">
+                                <div><%= comment && comment.createdBy ? comment.createdBy.fullname : 'Unknown' %></div>
                                 </div>
                                 <p style="color: azure;"><%= comment.content %></p>
                             <% }) %>
@@ -147,6 +147,7 @@
     </div>
     <%-include('./partials/scripte.ejs')  %>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="/public/particles-config.js"></script>
+-   <script src="/public/particles-config.js"></script>
++   <script src="/particles-config.js"></script>
 </body>
 </html>
