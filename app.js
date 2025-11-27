@@ -50,6 +50,8 @@ app.get("/", async (req, res) => {
   }
 });
 
+// const PORT = process.env.PORT || 8000;
+// app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
 
 // let isConnected = false;
 // async function connectedMongoDB () {
@@ -75,8 +77,7 @@ app.get("/", async (req, res) => {
 
 // module.exports = app;
 
-// const PORT = process.env.PORT || 8000;
-// app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
+
 
 mongoose.connect(process.env.MONGO_URL)
   .then(() => {
