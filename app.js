@@ -1,4 +1,5 @@
 // ...existing code...
+import ServerlessHttp from "serverless-http";
 import express from "express";
 import dotenv from "dotenv";
 import ejs from "ejs";
@@ -50,29 +51,40 @@ app.get("/", async (req, res) => {
 });
 
 
-let isConnected = false;
-async function connectedMongoDB () {
-  try {
-    await mongoose.connect(process.env.MONGO_URL,{
-      useNewUrlParser:true,
-      useUnifiedTopology:true
-    })
-    isConnected = true;
-    console.log('Connected to MongoDB')
-  } catch (error) {
-    console.error('Error connecting to MongoDB:',error)
-  }
-}
+// let isConnected = false;
+// async function connectedMongoDB () {
+//   try {
+//     await mongoose.connect(process.env.MONGO_URL,{
+//       useNewUrlParser:true,
+//       useUnifiedTopology:true
+//     })
+//     isConnected = true;
+//     console.log('Connected to MongoDB')
+//   } catch (error) {
+//     console.error('Error connecting to MongoDB:',error)
+//   }
+// }
 
 //add middleware
-app.use((req,res,next) => {
-  if(!isConnected){
-    connectedMongoDB();
-  }
-  next();
-})
+// app.use((req,res,next) => {
+//   if(!isConnected){
+//     connectedMongoDB();
+//   }
+//   next();
+// })
 
-module.exports = app;
+// module.exports = app;
+
 // const PORT = process.env.PORT || 8000;
 // app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
 
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log("mongoose Connected");
+  })
+  .catch(err => {
+    console.error("Mongoose connect error:", err);
+  });
+
+const handler = ServerlessHttp(app);
+export default handler;
