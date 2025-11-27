@@ -26,9 +26,9 @@ app.use(checkForAuthenticationCookie("token"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-mongoose.connect(process.env.MONGO_URL).then(() => {
-  console.log("mongoose Connected");
-});
+// mongoose.connect(process.env.MONGO_URL).then(() => {
+//   console.log("mongoose Connected");
+// });
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
