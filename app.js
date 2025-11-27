@@ -1,5 +1,5 @@
 // ...existing code...
-import ServerlessHttp from "serverless-http";
+// import ServerlessHttp from "serverless-http";
 import express from "express";
 import dotenv from "dotenv";
 import ejs from "ejs";
@@ -26,9 +26,9 @@ app.use(checkForAuthenticationCookie("token"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// mongoose.connect(process.env.MONGO_URL).then(() => {
-//   console.log("mongoose Connected");
-// });
+mongoose.connect(process.env.MONGO_URL).then(() => {
+  console.log("mongoose Connected");
+});
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -50,8 +50,8 @@ app.get("/", async (req, res) => {
   }
 });
 
-// const PORT = process.env.PORT || 8000;
-// app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
 
 // let isConnected = false;
 // async function connectedMongoDB () {
@@ -79,13 +79,13 @@ app.get("/", async (req, res) => {
 
 
 
-mongoose.connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log("mongoose Connected");
-  })
-  .catch(err => {
-    console.error("Mongoose connect error:", err);
-  });
+// mongoose.connect(process.env.MONGO_URL)
+//   .then(() => {
+//     console.log("mongoose Connected");
+//   })
+//   .catch(err => {
+//     console.error("Mongoose connect error:", err);
+//   });
 
-const handler = ServerlessHttp(app);
-export default handler;
+// const handler = ServerlessHttp(app);
+// export default handler;
