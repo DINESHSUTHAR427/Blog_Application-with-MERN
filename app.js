@@ -50,7 +50,29 @@ app.get("/", async (req, res) => {
 });
 
 
+let isConnected = false;
+async function connectedMongoDB () {
+  try {
+    await mongoose.connect(process.env.MONGO_URL,{
+      useNewUrlParser:true,
+      useUnifiedTopology:true
+    })
+    isConnected = true;
+    console.log('Connected to MongoDB')
+  } catch (error) {
+    console.error('Error connecting to MongoDB:',error)
+  }
+}
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
+//add middleware
+app.use((req,res,next) => {
+  if(!isConnected){
+    connectedMongoDB();
+  }
+  next();
+})
+
+module.exports = app
+// const PORT = process.env.PORT || 8000;
+// app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
 
