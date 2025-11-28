@@ -1,5 +1,5 @@
 // ...existing code...
-// import ServerlessHttp from "serverless-http";
+import ServerlessHttp from "serverless-http";
 import express from "express";
 import dotenv from "dotenv";
 import ejs from "ejs";
@@ -26,9 +26,9 @@ app.use(checkForAuthenticationCookie("token"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-mongoose.connect(process.env.MONGO_URL).then(() => {
-  console.log("mongoose Connected");
-});
+// mongoose.connect(process.env.MONGO_URL).then(() => {
+//   console.log("mongoose Connected");
+// });
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -50,8 +50,8 @@ app.get("/", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
+// const PORT = process.env.PORT || 8000;
+// app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
 
 // let isConnected = false;
 // async function connectedMongoDB () {
@@ -89,3 +89,26 @@ app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
 
 // const handler = ServerlessHttp(app);
 // export default handler;
+
+async function connectToMongo() {
+  if (global.__mongoConnectPromise) return global.__mongoConnectPromise;
+  global.__mongoConnectPromise = mongoose
+    .connect(process.env.MONGO_URL)
+    .then(() => console.log("mongoose Connected"))
+    .catch(err => {
+      console.error("Mongoose connect error:", err);
+      throw err;
+    });
+  return global.__mongoConnectPromise;
+}
+connectToMongo();
+
+const handler = ServerlessHttp(app);
+
+// run local server only when not on Vercel
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 8000;
+  app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
+}
+
+export default handler;
