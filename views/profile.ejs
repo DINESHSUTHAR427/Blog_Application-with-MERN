@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <%- include('./partials/head.ejs') %>
+    <title>User Profile</title>
+    <style>
+       #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            z-index: -1;
+        }
+        .profile-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .profile-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <div id="particles-js"></div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="profile-container text-center">
+                    <h2 class="text-center mb-4">Your Profile</h2>
+                    <img src="<%= user.profileImageURL %>" alt="User Profile Image" class="profile-image">
+                    <form action="/user/profile" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullname" name="fullname" value="<%= user.fullname %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="profileImage" class="form-label">New Profile Image</label>
+                            <input type="file" class="form-control" id="profileImage" name="profileImage">
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('./partials/scripte.ejs') %>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="/particles-config.js"></script>
+</body>
+</html>

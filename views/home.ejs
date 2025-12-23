@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%-  include('./partials/head.ejs')  %>
+    <title>Home pages</title>
+    <style>
+        #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color:rgb(0, 0, 0); /* Optional background color */
+     
+      z-index: -1; /* Keep it behind other elements */
+    }
+
+    h1 {
+      position: relative;
+      color: white;
+      text-align: center;
+      margin-top: 20%;
+      font-size: 3rem;
+    }
+
+        .card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden; /* Ensures image corners are rounded */
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            
+        }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .btn-primary {
+            background-color: whitesmoke;
+            border-color: black;
+        }
+        .btn-primary:hover {
+            background-color: grey;
+            border-color: black;
+        }
+    </style>
+</head>
+<body>
+    <%-  include('./partials/nav.ejs')  %>
+    <div id="particles-js"></div>
+    <div class="container mt-4">
+        <div class="row">
+                <% blogs.forEach(blog => { %>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="<%= blog.coverImageUrl %>" class="card-img-top" alt="blog image">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title" style="color: azure;"><%= blog.title%></h5>
+                                <a href="/blog/<%= blog._id %>" class="btn btn-primary mt-auto" style="color: black;">View Blog</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+        </div>
+     </div>
+     
+    <%-include('./partials/scripte.ejs')  %>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+-   <script src="/public/particles-config.js"></script>
++   <script src="/particles-config.js"></script>
+</body>
+</html>
