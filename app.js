@@ -6,7 +6,7 @@ const userRoute = require("./routes/user");
 const blogRouter = require("./routes/blog");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-const { checkAuth } = require("./middlewares/authentication");
+const { checkAuth , user_update_global } = require("./middlewares/authentication");
 const Blog = require("./models/blog");
 
 
@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(checkAuth("token"));
+app.use(user_update_global);
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));

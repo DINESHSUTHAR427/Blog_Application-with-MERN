@@ -24,8 +24,14 @@ function requireAuth(req, res, next) {
   next();
 }
 
+function user_update_global (req ,res, next){
+  res.locals.user = req.user || null;
+  next();
+}
+
 
 module.exports = {
   checkAuth,
   requireAuth,
+  user_update_global
 };

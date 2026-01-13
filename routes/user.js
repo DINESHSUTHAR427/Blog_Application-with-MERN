@@ -110,7 +110,10 @@ router.post("/profile", requireAuth, upload.single("profileImage"), async (req, 
       updateData.userImageUrl = result.secure_url;
     }
 
-    await User.findByIdAndUpdate(userId, updateData, { new: true });
+    const updatedUser =  await User.findByIdAndUpdate(userId, updateData, { new: true });
+    req.user.username = updatedUser.username;
+    req.user.email = updatedUser.email;
+    req.user.userImageUrl = updatedUser.userImageUrl;
     return res.redirect("/user/profile");
   } catch (err) {
     console.error("Profile update error:", err);
