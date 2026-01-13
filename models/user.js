@@ -1,5 +1,5 @@
 const {Schema,model} = require("mongoose");
-const { error } = require("node:console");
+const validator = require("validator");
 const{ createTokenforUser }  = require("../services/authentication")
 const {
   createHmac,
@@ -7,36 +7,43 @@ const {
 } = require("node:crypto");
 
 const userSchema = new Schema({
- fullname : {
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+    trim: true,
+
+  },
+
+  email: {
     type: String,
     required: true,
- },
- email: {
-    type : String,
-    required : true,
     unique: true,
- },
- salt: {
-    type : String
- },
- password : {
-    type : String,
-    required : true
-   
-   },
-    
- userImageUrl : {
+    validate: [validator.isEmail, "please enter a valid email"]
+  },
+
+  salt: {
+    type: String
+  },
+
+  password: {
+    type: String,
+    required: true
+  },
+
+  userImageUrl: {
     type: String,
     default: "../public/user.jpg"
- },
- role:{
+  },
+
+  role: {
     type: String,
-    enum : ["USER","ADMIN"],
-    default: "USER",
- }
-} ,{
-    timestamps: true
-})
+    enum: ["USER", "ADMIN"],
+    default: "USER"
+  }
+}, {
+  timestamps: true
+});
 
 userSchema.pre("save", function(next) {
     const user = this;

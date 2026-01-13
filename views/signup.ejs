@@ -39,8 +39,8 @@
                     <h2 class="text-center mb-4">Create Account</h2>
                     <form action="/user/signup" method="post">
                         <div class="mb-3">
-                            <label for="fullname" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="fullname" name="fullname" required>
+                            <label for="username" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email address</label>
@@ -50,6 +50,11 @@
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <!-- Show Password Toggle -->
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="togglePassword">
+                            <label class="form-check-label" for="togglePassword">Show Password</label>
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="termsCheck">
@@ -67,5 +72,14 @@
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 -   <script src="/public/particles-config.js"></script>
 +   <script src="/particles-config.js"></script>
+<script>
+        const passwordInput = document.getElementById('password');
+        const toggleCheckbox = document.getElementById('togglePassword');
+
+        toggleCheckbox.addEventListener('change', function() {
+            // If checkbox is checked, type is text, otherwise type is password
+            passwordInput.type = this.checked ? 'text' : 'password';
+        });
+    </script>
 </body>
 </html>

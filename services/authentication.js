@@ -1,33 +1,39 @@
-const JWT = require("jsonwebtoken");
-const secret = "dineshsuthar";
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-function createTokenforUser (user){
-    try {
-        const payload = {
-            _id: user._id,
-            email : user.email,
-            userImageUrl : user.userImageUrl,
-            role : user.role    
-        };
-        const token = JWT.sign(payload,secret);
-        return token;
-    } catch (error) {
-        console.error("Token creation error:", error);
-        throw new Error("Failed to create authentication token");
-    }
+
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN = "7d"; // change as needed
+
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in environment variables");
 }
 
-function validateToken (token){
-    try {
-        const payload = JWT.verify(token,secret);
-        return payload;
-    } catch (error) {
-        console.error("Token validation error:", error);
-        throw new Error("Invalid or expired token");
-    }
+/* ================= CREATE TOKEN ================= */
+
+function createTokenforUser(user) {
+  const payload = {
+    id: user._id,
+    email: user.email,
+    username: user.username,
+    role: user.role,
+  };
+
+  return jwt.sign(payload, JWT_SECRET, {
+    expiresIn: JWT_EXPIRES_IN,
+    algorithm: "HS256",
+  });
+}
+
+/* ================= VERIFY TOKEN ================= */
+
+function validateToken(token) {
+  return jwt.verify(token, JWT_SECRET, {
+    algorithms: ["HS256"],
+  });
 }
 
 module.exports = {
-    createTokenforUser,
-    validateToken
-}
+  createTokenforUser,
+  validateToken,
+};

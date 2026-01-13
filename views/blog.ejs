@@ -112,10 +112,12 @@
             <% if (blog.coverImageUrl) { %>
                 <img src="<%=blog.coverImageUrl %>" class="blog-cover-image" alt="<%= blog.title %>">
             <% } %>
-            <div class="author-info">
-                <img src="<%= blog.createBy.userImageUrl %>" class="author-avatar">
-                <div><%= blog.createBy.fullname %></div>
-            </div>
+            <% if (blog.createBy) { %>
+                <div class="author-info">
+                    <img src="<%= blog.createBy.userImageUrl %>" class="author-avatar">
+                    <div><%= blog.createBy.username %></div>
+                </div>
+            <% } %>
             <div class="blog-body">
             <pre><%- blog.body %></pre>
             </div>
@@ -125,26 +127,27 @@
                     <% if (locals.user) { %>
                         <h2 class="text-center mb-4" style="color: #ffffff;">Comment For Blog (<%= comments.length %>) </h2>
 
-                        <div class="mb-3">
-                            <label for="text" class="form-label" style="color: azure;">Your Comment</label>
+                        <div class="comments-list mb-4">
                             <% comments.forEach(comment => { %>
-                                <div class="author-info">
-                                <img src="<%= comment && comment.createdBy && comment.createdBy.userImageUrl ? comment.createdBy.userImageUrl : '/images/default-avatar.png' %>" class="author-avatar" alt="author avatar">
-                                <div><%= comment && comment.createdBy ? comment.createdBy.fullname : 'Unknown' %></div>
+                                <div class="comment">
+                                    <div class="author-info">
+                                        <img src="<%= comment.createdBy && comment.createdBy.userImageUrl ? comment.createdBy.userImageUrl : '/images/default-avatar.png' %>" class="author-avatar" alt="author avatar">
+                                        <div><%= comment.createdBy ? comment.createdBy.username : 'Unknown' %></div>
+                                    </div>
+                                    <p class="comment-content"><%= comment.content %></p>
                                 </div>
-                                <p style="color: azure;"><%= comment.content %></p>
                             <% }) %>
                         </div>
+
                         <form action="/blog/comment/<%= blog._id %>" method="post">
-                        <div class="mb-3">
-                            <label for="text" class="form-label">Comment</label>
-                            <input type="text" class="form-control" name="content" placeholder="Enter Your Comment">
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">Summit</button>
-                        </div>
-                    </form>
-                    
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Add Comment</label>
+                                <input type="text" class="form-control" id="content" name="content" placeholder="Enter Your Comment">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                            </div>
+                        </form>
                     <% } %>
                     
                 </div>
