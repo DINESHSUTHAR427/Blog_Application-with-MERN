@@ -56,7 +56,6 @@ mongoose.connect(process.env.MONGO_URL).then(async() => {
 
 
 app.use(express.static(path.join(__dirname, "public")));
-app.use('/uploads', express.static(path.resolve('./public/uploads')));
 app.use("/user", userRoute);
 app.use("/blog", blogRouter);
 
