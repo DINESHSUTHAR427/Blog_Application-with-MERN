@@ -4,7 +4,7 @@
 
 **A modern, full-stack blog platform — write, share, and connect.**
 
-![Banner](public/Screenshot 2026-03-22 at 19.21.16.png)
+![Banner](public/Screenshot2026-03-22at19.21.16.png)
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://blog-application-with-mern.vercel.app/)
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
