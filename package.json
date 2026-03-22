@@ -15,6 +15,7 @@
     "@fluidjs/multer-cloudinary": "^1.0.4",
     "bootstrap": "^5.3.7",
     "cloudinary": "^2.8.0",
+    "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
@@ -25,6 +26,7 @@
     "multer": "^1.4.5-lts.2",
     "mutter": "^1.0.1",
     "path": "^0.12.7",
+    "quill": "^2.0.3",
     "serverless-http": "^4.0.0",
     "validator": "^13.15.26"
   },

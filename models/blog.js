@@ -16,9 +16,11 @@ const blogSchema = new Schema({
  createdBy: {
     type : Schema.Types.ObjectId,
     ref : "user",
+    index: true,  // ── Performance: index for ownership checks ──
  },
 } ,{
     timestamps: true
 });
+
 const Blog = model('blog',blogSchema)
 module.exports = Blog;

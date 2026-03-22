@@ -5,7 +5,6 @@ const Comment = require('../models/comment')
 const upload = require('../middlewares/multer')
 const cloudinary = require("../utils/cloudinary.js")
 const { requireAuth } = require("../middlewares/authentication")
-
 /* ================= ADD BLOG ================= */
 router.get('/add-new' , (req,res) => {
     return res.render('addBlog',{
@@ -22,7 +21,8 @@ router.post(
     try {
       const { title, body } = req.body;
 
-      if (!title || !body) {
+      const plainText = (body || '').replace(/<[^>]*>/g, '').trim();
+      if (!title || !plainText) {
         return res.status(400).send("Title and body are required");
       }
 
@@ -37,7 +37,7 @@ router.post(
         title,
         body,
         coverImageUrl,
-        createdBy: req.user._id,
+        createdBy: req.user.id,
       });
 
       return res.redirect(`/blog/${blog._id}`);
@@ -59,7 +59,7 @@ router.post("/comment/:blogId", requireAuth, async (req, res) => {
     await Comment.create({
       content: req.body.content,
       blog: req.params.blogId,
-      createdBy: req.user._id,
+      createdBy: req.user.id,
     });
 
     return res.redirect(`/blog/${req.params.blogId}`);
@@ -73,15 +73,18 @@ router.post("/comment/:blogId", requireAuth, async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const blog = await Blog.findById(req.params.id)
-      .populate("createdBy", "username email userImageUrl");
+    // ── Performance: run both queries in parallel ────────────────────
+    const [blog, comments] = await Promise.all([
+      Blog.findById(req.params.id)
+        .populate("createdBy", "username email userImageUrl")
+        .lean(),
+      Comment.find({ blog: req.params.id })
+        .populate("createdBy", "username userImageUrl")
+        .sort({ createdAt: -1 })
+        .lean(),
+    ]);
 
     if (!blog) return res.redirect("/");
-
-    const comments = await Comment.find({ blog: blog._id })
-      .populate("createdBy", "username userImageUrl");
-
-    console.log("Comments data:", JSON.stringify(comments, null, 2));
 
     return res.render("blog", {
       user: req.user,
@@ -94,4 +97,48 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Show edit form
+router.get("/edit/:id", requireAuth, async (req, res) => {
+    const blog = await Blog.findById(req.params.id).lean();
+    if (!blog) return res.redirect("/");
+
+    if (!blog.createdBy || blog.createdBy.toString() !== req.user.id) {
+        return res.send("Unauthorized");
+    }
+
+    res.render("editBlog", { blog, user: req.user });
+});
+
+// Handle update
+router.post("/edit/:id", requireAuth, async (req, res) => {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) return res.redirect("/");
+
+    if (!blog.createdBy || blog.createdBy.toString() !== req.user.id) {
+        return res.send("Unauthorized");
+    }
+
+    await Blog.findByIdAndUpdate(req.params.id, {
+        title: req.body.title,
+        body: req.body.body
+    });
+
+    res.redirect("/");
+});
+
+
+router.post("/delete/:id", requireAuth, async (req, res) => {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) return res.redirect("/");
+
+    if (!blog.createdBy || blog.createdBy.toString() !== req.user.id) {
+        return res.send("Unauthorized");
+    }
+
+    await Blog.findByIdAndDelete(req.params.id);
+    res.redirect("/");
+});
+
+
 module.exports = router;
+

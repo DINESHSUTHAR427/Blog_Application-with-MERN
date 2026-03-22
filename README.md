@@ -1,165 +1,260 @@
+<div align="center">
+
 # Blogify 📝
 
-A simple and elegant blogging platform built with Node.js, Express, and MongoDB. Blogify allows users to sign up, create beautifully formatted blog posts with cover images, and engage with content through comments.
+**A modern, full-stack blog platform — write, share, and connect.**
 
- <!-- Replace with a real screenshot of your app -->
-URl For visit => https://blog-application-with-mern.vercel.app/
+![Banner](public/images/blogify-banner.png)
 
-## Table of Contents
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://blog-application-with-mern.vercel.app/)
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Express](https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![License](https://img.shields.io/badge/License-ISC-blue?style=for-the-badge)](LICENSE)
 
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Getting Started](#getting-started)
+</div>
+
+---
+
+## 📖 Table of Contents
+
+- [About the Project](#-about-the-project)
+- [Live Demo](#-live-demo)
+- [Features](#-features)
+- [Screenshots](#-screenshots)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
+  - [Environment Variables](#environment-variables)
+- [API Routes](#-api-routes)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-## Features
+---
 
--   **🔐 Secure User Authentication**: Signup and Signin functionality with password hashing (`crypto`) and salting.
--   **📝 Full Blog Management**: Logged-in users can create and view blog posts.
--   **🖼️ Image Uploads**: Users can upload a cover image for each blog post using `multer`.
--   **💬 Commenting System**: Users can post comments on blogs to engage with the content.
--   **🌐 RESTful API**: A clear and structured set of API endpoints for managing users, blogs, and comments.
--   **🔐 JWT-based Sessions**: Secure and stateless session management using JSON Web Tokens.
+## 📌 About the Project
 
-## Technologies Used
+**Blogify** is a full-stack blogging application built with the **MERN stack** (MongoDB, Express, Node.js) and **EJS** as the templating engine. It allows users to register, log in, create rich blog posts with cover images, leave comments, and manage their own content — all in a sleek, dark-themed UI with particle effects.
 
--   **Backend**: Node.js, Express
--   **Database**: MongoDB (with Mongoose)
--   **View Engine**: EJS (Embedded JavaScript)
--   **Authentication**: JSON Web Token (JWT)
--   **File Uploads**: Multer
--   **Styling**: Bootstrap
+---
 
-## Getting Started
+## 🌐 Live Demo
 
-Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+🔗 **[https://blog-application-with-mern.vercel.app/](https://blog-application-with-mern.vercel.app/)**
+
+---
+
+## ✨ Features
+
+- 🔐 **JWT Authentication** — Secure sign-up, sign-in, and session management via HTTP-only cookies
+- 📝 **Full Blog CRUD** — Create, read, update, and delete your blog posts with ease
+- 🖼️ **Image Upload** — Upload cover images using **Multer** and store them on **Cloudinary**
+- 💬 **Comments System** — Authenticated users can comment on any blog post
+- 👤 **Author Profiles** — Each blog displays the author's avatar and username
+- 🛡️ **Authorization Guards** — Only blog owners can edit or delete their posts
+- 🌌 **Particle.js Background** — Immersive animated dark UI with glassmorphism cards
+- 📱 **Responsive Design** — Fully mobile-friendly via Bootstrap 5
+- ⚡ **Vercel Deployment** — Serverless-ready with `serverless-http`
+
+---
+
+## 📸 Screenshots
+
+> Screenshots are from the live deployed application.
+
+### 🏠 Home Page
+![Home Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/images/screenshot-home.png)
+
+### 📄 Blog Detail Page
+![Blog Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/images/screenshot-blog.png)
+
+### ✏️ Edit Blog Page
+![Edit Blog](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/images/screenshot-edit.png)
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Runtime** | Node.js |
+| **Framework** | Express.js |
+| **Database** | MongoDB (Mongoose ODM) |
+| **Templating** | EJS |
+| **Styling** | Bootstrap 5 + Vanilla CSS |
+| **Auth** | JSON Web Tokens (JWT) + Cookie Parser |
+| **Image Upload** | Multer + Cloudinary |
+| **Animation** | Particles.js |
+| **Deployment** | Vercel (serverless-http) |
+| **Dev Tools** | Nodemon, dotenv |
+
+---
+
+## 📁 Project Structure
+
+```
+blogify/
+├── api/                    # Vercel serverless entry
+├── middlewares/
+│   ├── authentication.js   # JWT auth middleware
+│   └── multer.js           # File upload config
+├── models/
+│   ├── blog.js             # Blog schema
+│   ├── comment.js          # Comment schema
+│   └── user.js             # User schema
+├── public/
+│   ├── images/             # Static assets
+│   └── particles-config.js # Particle animation config
+├── routes/
+│   ├── blog.js             # Blog & comment routes
+│   └── user.js             # Auth routes
+├── services/
+│   └── authentication.js   # JWT sign/validate helpers
+├── utils/
+│   └── cloudinary.js       # Cloudinary SDK config
+├── views/
+│   ├── partials/           # Reusable EJS partials (nav, head)
+│   ├── home.ejs
+│   ├── blog.ejs
+│   ├── editBlog.ejs
+│   ├── addBlog.ejs
+│   ├── signin.ejs
+│   └── signup.ejs
+├── app.js                  # Main Express server
+├── .env.example            # Environment variable template
+└── vercel.json             # Vercel deployment config
+```
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-Make sure you have the following installed on your system:
--   Node.js (v16.x or later recommended)
--   npm
--   MongoDB
+Make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/)
+- A [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) cluster
+- A [Cloudinary](https://cloudinary.com/) account
 
 ### Installation
 
-1.  **Clone the repository:**
-    ```sh
-    git clone https://github.com/your-username/Blogify---A-Simple-Blogging-Application-main.git
-    cd Blogify---A-Simple-Blogging-Application-main
-    ```
+```bash
+# 1. Clone the repository
+git clone https://github.com/DINESHSUTHAR427/Blog_Application-with-MERN.git
 
-2.  **Install dependencies:**
-    ```sh
-    npm install
-    ```
+# 2. Navigate to the project directory
+cd Blog_Application-with-MERN
 
-3.  **Set up the database:**
-    Ensure your MongoDB server is running. The application connects to `mongodb://localhost:27017/blogify` by default. You can change this connection string in `index.js`.
+# 3. Install all dependencies
+npm install
 
-## Usage
-
-1.  **Start the server for development:**
-
-    This command uses `nodemon` to automatically restart the server on file changes.
-    ```sh
-    npm run dev
-    ```
-
-2.  **Start the server for production:**
-    ```sh
-    npm start
-    ```
-
-3.  **Access the application:**
-
-    Open your web browser and navigate to `http://localhost:8000`.
-
-## Project Structure
-
-```
-Bloging appliction/
-├── models/
-│   └── user.js         # Mongoose User schema and model
-├── node_modules/
-├── public/
-│   └── user.webp       # Default user image
-├── routes/
-│   └── user.js         # User-related routes (signup, signin)
-├── views/
-│   ├── home.ejs
-│   ├── signin.ejs
-│   └── signup.ejs
-├── .gitignore
-├── index.js            # Main application entry point
-├── package-lock.json
-└── package.json
+# 4. Start the development server
+npm run dev
 ```
 
-## Prerequisites
+The app will be running at **http://localhost:8000** 🎉
 
--   Node.js (v14.x or later recommended)
--   npm
--   MongoDB installed and running on `mongodb://localhost:27017`.
+### Environment Variables
 
-## Installation
+Create a `.env` file in the root directory by copying the example:
 
-1.  **Clone the repository:**
-    ```sh
-    git clone <your-repository-url>
-    cd "Bloging appliction"
-    ```
+```bash
+cp .env.example .env
+```
 
-2.  **Install dependencies:**
-    ```sh
-    npm install
-    ```
+Then fill in your values:
 
-## Usage
+```env
+# MongoDB connection string
+MONGO_URL=mongodb+srv://<username>:<password>@cluster.mongodb.net/blogify
 
-1.  **Start the server:**
+# Server port
+PORT=8000
 
-    To run the application, execute the following command from the `Bloging appliction` directory:
+# Cloudinary credentials
+CLOUD_NAME=your_cloud_name
+CLOUD_API_KEY=your_api_key
+CLOUD_API_SECRET=your_api_secret
 
-    ```sh
-    node index.js
-    ```
+# JWT secret key (use a long, random string)
+SECRET=your_super_secret_jwt_key
+```
 
-    For development, it's recommended to use `nodemon` to automatically restart the server on file changes:
-
-    ```sh
-    npm install -g nodemon
-    nodemon index.js
-    ```
-
-2.  **Access the application:**
-
-    Open your web browser and navigate to `http://localhost:8000`.
-
-## API Endpoints
-
-The following are the main routes available for user management:
-
--   `GET /`: Renders the home page.
--   `GET /user/signup`: Renders the user registration page.
--   `POST /user/signup`: Handles new user creation.
--   `GET /user/signin`: Renders the user login page.
--   `POST /user/signin`: Handles user login.
-
-## Future Improvements
-
-This project has a solid foundation. Here are some features that could be added next:
-
--   **Complete Sign-in Logic**: Implement session management (e.g., using JWT or express-session) upon successful login to keep users authenticated.
--   **Blog Post CRUD**: Allow logged-in users to Create, Read, Update, and Delete their blog posts.
--   **User Profiles**: Create pages for users to view and manage their profiles.
--   **Comments**: Allow users to comment on blog posts.
--   **Frontend Enhancements**: Improve the UI/UX with a CSS framework like Bootstrap or Tailwind CSS.
--   **Error Handling**: Add a centralized error handling middleware for more robust error management.
+> ⚠️ **Never commit your `.env` file.** It is already listed in `.gitignore`.
 
 ---
+
+## 🔌 API Routes
+
+### Auth Routes (`/user`)
+
+| Method | Path | Description | Auth Required |
+|---|---|---|---|
+| `GET` | `/user/signin` | Sign-in page | ❌ |
+| `POST` | `/user/signin` | Authenticate user | ❌ |
+| `GET` | `/user/signup` | Sign-up page | ❌ |
+| `POST` | `/user/signup` | Register new user | ❌ |
+| `GET` | `/user/logout` | Log out & clear cookie | ✅ |
+
+### Blog Routes (`/blog`)
+
+| Method | Path | Description | Auth Required |
+|---|---|---|---|
+| `GET` | `/blog/add-new` | New blog form | ✅ |
+| `POST` | `/blog/` | Create a blog | ✅ |
+| `GET` | `/blog/:id` | View a blog | ❌ |
+| `GET` | `/blog/edit/:id` | Edit blog form | ✅ Owner only |
+| `POST` | `/blog/edit/:id` | Update blog | ✅ Owner only |
+| `POST` | `/blog/delete/:id` | Delete blog | ✅ Owner only |
+| `POST` | `/blog/comment/:blogId` | Add a comment | ✅ |
+
+---
+
+## ☁️ Deployment
+
+This project is configured for **Vercel** deployment.
+
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Deploy
+vercel
+```
+
+The `vercel.json` config routes all traffic through the `api/index.js` serverless function.
+
+> Make sure to add all environment variables in your **Vercel project dashboard** under **Settings → Environment Variables**.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open an issue or submit a pull request.
+
+1. Fork the project
+2. Create your feature branch: `git checkout -b feature/AmazingFeature`
+3. Commit your changes: `git commit -m 'Add some AmazingFeature'`
+4. Push to the branch: `git push origin feature/AmazingFeature`
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the **ISC License**. See the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+Made with ❤️ by **[Dinesh Suthar](https://github.com/DINESHSUTHAR427)**
+
+⭐ If you like this project, give it a star!
+
+</div>

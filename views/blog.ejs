@@ -3,159 +3,241 @@
 <head>
     <%-  include('./partials/head.ejs')  %>
     <title><%= blog.title %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Quill Snow CSS — renders alignment/indent helper classes correctly -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     <style>
+        /* ── Particles ──────────────────────────────────────────── */
         #particles-js {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color:rgb(0, 0, 0); /* Optional background color */
-     
-      z-index: -1; /* Keep it behind other elements */
-    }
-        .blog-container, .comments-container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            background-color: rgba(0, 0, 0, 0.85);
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 2rem 3rem;
-            color: white;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
-        .blog-container:hover, .comments-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 8px 24px rgba(0,0,0,0.2);
-        }
-        .blog-title {
-            font-size: 2.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-        .author-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 1rem;
-        }
-        .blog-cover-image {
-            width: 100%;
-            height: auto;
-            max-height: 500px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 2.5rem;
-        }
-        .blog-body {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            color: #e9ecef;
-        }
-        .blog-body pre {
-            white-space: pre-wrap; /* Allows pre-formatted text to wrap */
-            word-wrap: break-word;   /* Breaks long words if they would overflow */
-            font-family: inherit;
-            color: inherit;
-        }
-        .comments-list {
-            margin-bottom: 2.5rem;
-        }
-        .comment {
-            border-bottom: 1px solid #495057;
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
-        }
-        .comment:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-        .comment .author-info {
-            margin-bottom: 0.5rem;
-        }
-        .comment-content {
-            color: #ced4da;
-            padding-left: calc(50px + 1rem); /* Align with author name */
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #111; z-index: -1;
         }
 
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .blog-container, .comments-container {
-                padding: 1.5rem;
-                margin: 1rem auto;
-            }
-            .blog-title {
-                font-size: 2rem;
-            }
-            .blog-body {
-                font-size: 1rem;
-            }
-            .comment-content {
-                padding-left: 0;
-            }
+        body { background: #000; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+
+        /* ── Page wrapper ───────────────────────────────────────── */
+        .gdoc-read-wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 96px 20px 80px;
+        }
+
+        /* ── Glass card (matches rest of site) ──────────────────── */
+        .gdoc-paper {
+            background: rgba(0,0,0,0.82);
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.07);
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+        }
+        .gdoc-paper:hover {
+            box-shadow: 0 0 20px rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        /* ── Cover image ─────────────────────────────────────────── */
+        .gdoc-cover {
+            width: 100%; max-height: 440px;
+            object-fit: cover; display: block;
+        }
+
+        /* ── Header: title + author ──────────────────────────────── */
+        .gdoc-header {
+            padding: 40px 48px 28px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .gdoc-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.4rem; font-weight: 700;
+            color: #f1f5f9; line-height: 1.25;
+            margin: 0 0 18px;
+        }
+        .gdoc-meta { display: flex; align-items: center; gap: 12px; }
+        .gdoc-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            object-fit: cover; border: 2px solid rgba(255,255,255,0.15);
+        }
+        .gdoc-author-name { font-size: 0.88rem; font-weight: 600; color: rgba(255,255,255,0.5); }
+
+        /* ── Blog body ───────────────────────────────────────────── */
+        .gdoc-body {
+            padding: 40px 48px 56px;
+            font-family: 'Inter', 'Roboto', sans-serif;
+            font-size: 1.05rem; line-height: 1.9;
+            color: #e2e8f0;
+        }
+        .gdoc-body :where(h1) { font-size: 2rem;   font-weight: 700; color: #f8fafc; margin: 0 0 14px;  line-height:1.2; }
+        .gdoc-body :where(h2) { font-size: 1.6rem;  font-weight: 700; color: #f1f5f9; margin: 28px 0 8px; }
+        .gdoc-body :where(h3) { font-size: 1.3rem;  font-weight: 600; color: #f1f5f9; margin: 22px 0 6px; }
+        .gdoc-body :where(h4) { font-size: 1.1rem;  font-weight: 600; color: #cbd5e1; margin: 16px 0 4px; }
+        .gdoc-body :where(p)  { margin: 0 0 12px; }
+        .gdoc-body :where(strong),.gdoc-body :where(b) { font-weight:700; color:#fff; }
+        .gdoc-body :where(em),.gdoc-body :where(i) { font-style:italic; color:#cbd5e1; }
+        .gdoc-body :where(u)  { text-decoration:underline; }
+        .gdoc-body :where(s)  { text-decoration:line-through; color:#64748b; }
+        .gdoc-body :where(a)  { color:#818cf8; text-decoration:underline; }
+        .gdoc-body :where(a:hover) { color:#a5b4fc; }
+        .gdoc-body :where(ul) { list-style:disc;    padding-left:1.75rem; margin:0 0 12px; }
+        .gdoc-body :where(ol) { list-style:decimal; padding-left:1.75rem; margin:0 0 12px; }
+        .gdoc-body :where(li) { margin-bottom:5px; }
+        .gdoc-body :where(blockquote) {
+            border-left: 4px solid #7c3aed;
+            margin: 20px 0; padding: 10px 20px;
+            background: rgba(109,40,217,0.1);
+            border-radius: 0 8px 8px 0;
+            color: #a78bfa; font-style: italic;
+        }
+        .gdoc-body :where(pre) {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; padding: 14px 18px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem; color: #7dd3fc;
+            overflow-x: auto; margin: 16px 0;
+        }
+        .gdoc-body :where(code) {
+            background: rgba(255,255,255,0.08);
+            border-radius: 4px; padding: 2px 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem; color: #f472b6;
+        }
+        .gdoc-body :where(pre code) { background:none; color:inherit; padding:0; }
+        .gdoc-body :where(img) {
+            max-width: 100%; border-radius: 8px;
+            display: block; margin: 20px auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .gdoc-body :where(hr) { border:none; border-top:1px solid rgba(255,255,255,0.1); margin:28px 0; }
+        .gdoc-body :where(table) { width:100%; border-collapse:collapse; margin:20px 0; font-size:0.97rem; }
+        .gdoc-body :where(th),.gdoc-body :where(td) { border:1px solid rgba(255,255,255,0.1); padding:8px 14px; text-align:left; }
+        .gdoc-body :where(th) { background:rgba(255,255,255,0.06); font-weight:700; color:#f1f5f9; }
+        /* Quill helpers */
+        .gdoc-body .ql-align-center  { text-align:center; }
+        .gdoc-body .ql-align-right   { text-align:right; }
+        .gdoc-body .ql-align-justify { text-align:justify; }
+        .gdoc-body .ql-indent-1 { padding-left:3em; }
+        .gdoc-body .ql-indent-2 { padding-left:6em; }
+
+        /* ── Footer rule ─────────────────────────────────────────── */
+        .gdoc-footer-rule { height:1px; background:rgba(255,255,255,0.07); margin:0 48px; }
+
+        /* ── Comments ────────────────────────────────────────────── */
+        .gdoc-comments-wrap { max-width:900px; margin:28px auto 0; padding:0 20px; }
+        .gdoc-comments-card {
+            background: rgba(0,0,0,0.82);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px; padding: 28px 36px;
+        }
+        .gdoc-comments-title { font-size:1rem; font-weight:700; color:rgba(255,255,255,0.75); margin:0 0 20px; }
+        .gdoc-comment { display:flex; gap:12px; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+        .gdoc-comment:last-child { border-bottom:none; }
+        .gdoc-comment-avatar { width:36px; height:36px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+        .gdoc-comment-author { font-size:0.82rem; font-weight:700; color:rgba(255,255,255,0.65); margin-bottom:3px; }
+        .gdoc-comment-text  { font-size:0.9rem; color:rgba(255,255,255,0.45); line-height:1.6; }
+        .gdoc-comment-form  { margin-top:24px; display:flex; gap:12px; align-items:center; }
+        .gdoc-comment-input {
+            flex:1; background:rgba(255,255,255,0.06);
+            border:1px solid rgba(255,255,255,0.1); border-radius:8px;
+            padding:11px 16px; color:#f0f0f5;
+            font-size:0.92rem; font-family:'Inter',sans-serif; outline:none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .gdoc-comment-input:focus { border-color:rgba(108,92,231,0.5); box-shadow:0 0 0 3px rgba(108,92,231,0.12); }
+        .gdoc-comment-input::placeholder { color:rgba(255,255,255,0.25); }
+        .gdoc-comment-submit {
+            padding:11px 22px;
+            background:linear-gradient(135deg,#6c5ce7,#a855f7);
+            color:#fff; border:none; border-radius:8px; cursor:pointer;
+            font-size:0.88rem; font-weight:600; font-family:'Inter',sans-serif;
+            transition:all 0.25s;
+        }
+        .gdoc-comment-submit:hover {
+            background:linear-gradient(135deg,#7c6cf7,#b865ff);
+            box-shadow:0 4px 14px rgba(168,85,247,0.4); transform:translateY(-1px);
+        }
+
+        /* ── Responsive ──────────────────────────────────────────── */
+        @media (max-width: 700px) {
+            .gdoc-header, .gdoc-body { padding-left: 20px; padding-right: 20px; }
+            .gdoc-footer-rule { margin: 0 20px; }
+            .gdoc-title { font-size: 1.6rem; }
+            .gdoc-comments-card { padding: 18px; }
+            .gdoc-comment-form { flex-direction:column; }
+            .gdoc-comment-submit { width:100%; }
         }
     </style>
 </head>
 <body>
-    <%-  include('./partials/nav.ejs')  %>
+    <%- include('./partials/nav.ejs') %>
     <div id="particles-js"></div>
-    <div class="container my-4">
-        <div class="blog-container">
-            <h1 class="blog-title"><%= blog.title %></h1>
+
+    <!-- ── White Paper ─────────────────────────────────────────── -->
+    <div class="gdoc-read-wrap">
+        <div class="gdoc-paper">
+
+            <!-- Cover image -->
             <% if (blog.coverImageUrl) { %>
-                <img src="<%=blog.coverImageUrl %>" class="blog-cover-image" alt="<%= blog.title %>">
+                <img src="<%= blog.coverImageUrl %>" class="gdoc-cover"
+                     alt="<%= blog.title %>" loading="lazy">
             <% } %>
-            <% if (blog.createBy) { %>
-                <div class="author-info">
-                    <img src="<%= blog.createBy.userImageUrl %>" class="author-avatar">
-                    <div><%= blog.createBy.username %></div>
+
+            <!-- Title + author -->
+            <div class="gdoc-header">
+                <h1 class="gdoc-title"><%= blog.title %></h1>
+                <% if (blog.createdBy) { %>
+                <div class="gdoc-meta">
+                    <img src="<%= blog.createdBy.userImageUrl %>"
+                         class="gdoc-avatar" alt="<%= blog.createdBy.username %>">
+                    <span class="gdoc-author-name"><%= blog.createdBy.username %></span>
                 </div>
-            <% } %>
-            <div class="blog-body">
-            <pre><%- blog.body %></pre>
+                <% } %>
             </div>
+
+            <!-- ── Rich blog body — NO <pre>, renders Quill HTML ── -->
+            <div class="gdoc-body ql-editor" style="padding: 48px 80px 64px;">
+                <%- blog.body %>
+            </div>
+
+            <div class="gdoc-footer-rule"></div>
         </div>
-        <div class="form-container">
-                    
-                    <% if (locals.user) { %>
-                        <h2 class="text-center mb-4" style="color: #ffffff;">Comment For Blog (<%= comments.length %>) </h2>
-
-                        <div class="comments-list mb-4">
-                            <% comments.forEach(comment => { %>
-                                <div class="comment">
-                                    <div class="author-info">
-                                        <img src="<%= comment.createdBy && comment.createdBy.userImageUrl ? comment.createdBy.userImageUrl : '/images/default-avatar.png' %>" class="author-avatar" alt="author avatar">
-                                        <div><%= comment.createdBy ? comment.createdBy.username : 'Unknown' %></div>
-                                    </div>
-                                    <p class="comment-content"><%= comment.content %></p>
-                                </div>
-                            <% }) %>
-                        </div>
-
-                        <form action="/blog/comment/<%= blog._id %>" method="post">
-                            <div class="mb-3">
-                                <label for="content" class="form-label">Add Comment</label>
-                                <input type="text" class="form-control" id="content" name="content" placeholder="Enter Your Comment">
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-                            </div>
-                        </form>
-                    <% } %>
-                    
-                </div>
-                
     </div>
-    <%-include('./partials/scripte.ejs')  %>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
--   <script src="/public/particles-config.js"></script>
-+   <script src="/particles-config.js"></script>
+
+    <!-- ── Comments ─────────────────────────────────────────────── -->
+    <% if (locals.user) { %>
+    <div class="gdoc-comments-wrap">
+        <div class="gdoc-comments-card">
+            <p class="gdoc-comments-title">
+                💬 Comments (<%= comments.length %>)
+            </p>
+
+            <% comments.forEach(comment => { %>
+            <div class="gdoc-comment">
+                <img src="<%= comment.createdBy && comment.createdBy.userImageUrl
+                             ? comment.createdBy.userImageUrl
+                             : '/images/default-avatar.png' %>"
+                     class="gdoc-comment-avatar" alt="avatar" loading="lazy">
+                <div>
+                    <div class="gdoc-comment-author">
+                        <%= comment.createdBy ? comment.createdBy.username : 'Unknown' %>
+                    </div>
+                    <div class="gdoc-comment-text"><%= comment.content %></div>
+                </div>
+            </div>
+            <% }) %>
+
+            <form action="/blog/comment/<%= blog._id %>" method="post"
+                  class="gdoc-comment-form">
+                <input type="text" name="content" class="gdoc-comment-input"
+                       placeholder="Write a comment…" required>
+                <button type="submit" class="gdoc-comment-submit">Post</button>
+            </form>
+        </div>
+    </div>
+    <% } %>
+
+    <%- include('./partials/scripte.ejs') %>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
+    <script src="/particles-config.js" defer></script>
 </body>
 </html>

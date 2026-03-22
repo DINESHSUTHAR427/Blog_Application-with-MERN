@@ -9,6 +9,7 @@ const commentSchema = new Schema({
     blog: {
         type: Schema.Types.ObjectId,
         ref: "blog",
+        index: true,  // ── Performance: index for Comment.find({ blog }) queries ──
     },
     createdBy: {
         type: Schema.Types.ObjectId,

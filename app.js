@@ -1,5 +1,6 @@
 // ...existing code...
 const express = require("express");
+const compression = require("compression");
 const dotenv = require("dotenv");
 const path = require("path");   
 const userRoute = require("./routes/user");
@@ -9,12 +10,14 @@ const cookieParser = require("cookie-parser");
 const { checkAuth , user_update_global } = require("./middlewares/authentication");
 const Blog = require("./models/blog");
 
-
-
 dotenv.config();
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+
+// ── Performance: gzip compress all responses ──────────────────────────
+app.use(compression());
+
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 app.use(checkAuth("token"));
 app.use(user_update_global);
@@ -22,47 +25,33 @@ app.use(user_update_global);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-mongoose.connect(process.env.MONGO_URL).then(async() => {
-  // List all indexes on the users collection
-  try {
-    const indexes = await mongoose.connection.collection('users').getIndexes();
-    console.log('Current indexes:', indexes);
-    
-    // List of valid index names that should exist
-    const validIndexes = ['_id_', 'username_1', 'email_1'];
-    
-    // Drop any indexes not in the valid list
-    for (const indexName of Object.keys(indexes)) {
-      if (!validIndexes.includes(indexName)) {
-        try {
-          await mongoose.connection.collection('users').dropIndex(indexName);
-          console.log(`✓ Dropped orphaned index: ${indexName}`);
-        } catch (err) {
-          console.log(`Could not drop ${indexName}:`, err.message);
-        }
-      }
-    }
+// ── Performance: cache compiled EJS templates in memory ───────────────
+if (process.env.NODE_ENV === "production") {
+  app.set("view cache", true);
+}
 
-    // List indexes after dropping
-    const updatedIndexes = await mongoose.connection.collection('users').getIndexes();
-    console.log('Updated indexes:', updatedIndexes);
-  } catch (error) {
-    console.error('Error:', error.message);
-  }
+mongoose.connect(process.env.MONGO_URL)
+  .catch(err => console.error("DB connection error:", err));
 
-    
-})
-.catch( err => console.error('Connected error',err)) 
+// ── Performance: serve static files with 7-day browser cache ─────────
+app.use(express.static(path.join(__dirname, "public"), {
+  maxAge: "7d",
+  etag: true,
+  lastModified: true,
+}));
 
-
-app.use(express.static(path.join(__dirname, "public")));
 app.use("/user", userRoute);
 app.use("/blog", blogRouter);
 
 
 app.get("/", async (req, res) => {
   try {
-    const Blogs = await Blog.find({});
+    // ── Performance: only select fields needed on home page ────────────
+    const Blogs = await Blog.find({})
+      .select("title coverImageUrl createdBy")
+      .sort({ createdAt: -1 })
+      .lean();
+
     return res.render("home", {
       user: req.user || null,
       blogs: Blogs,
@@ -76,4 +65,3 @@ app.get("/", async (req, res) => {
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`server is connected at port: ${PORT}`));
-

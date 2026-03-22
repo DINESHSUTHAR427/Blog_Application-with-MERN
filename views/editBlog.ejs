@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 <head>
     <%- include('./partials/head.ejs') %>
-    <title>Add New Blog</title>
+    <title>Edit Blog · <%= blog.title %></title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Quill Snow CSS -->
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
@@ -14,15 +14,16 @@
             background: #111; z-index: -1;
         }
 
+        /* ── Page layout ────────────────────────────────────────── */
         body { background: #1a1a1a; font-family: 'Inter', sans-serif; }
 
         .gdoc-page {
             min-height: 100vh;
-            padding-top: 72px;
+            padding-top: 72px; /* space for sticky toolbar */
             padding-bottom: 60px;
         }
 
-        /* ── Sticky top bar ─────────────────────────────────────── */
+        /* ── Sticky Google-Docs-style top bar ───────────────────── */
         .gdoc-topbar {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -30,7 +31,9 @@
             border-bottom: 1px solid rgba(255,255,255,0.08);
             z-index: 1000;
             padding: 10px 24px;
-            display: flex; align-items: center; gap: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.4);
         }
         .gdoc-topbar-icon {
@@ -43,19 +46,29 @@
         .gdoc-topbar-icon svg { width: 18px; height: 18px; color: white; }
         .gdoc-doc-name {
             font-size: 1rem; font-weight: 600; color: #f0f0f5;
+            border: 1px solid transparent;
+            border-radius: 4px;
             padding: 2px 6px;
+            cursor: text;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            max-width: 320px;
         }
-        .gdoc-topbar-actions { margin-left: auto; display: flex; gap: 10px; align-items: center; }
-        .gdoc-btn-publish {
+        .gdoc-topbar-actions {
+            margin-left: auto;
+            display: flex; gap: 10px; align-items: center;
+        }
+        .gdoc-btn-save {
             display: inline-flex; align-items: center; gap: 6px;
             padding: 8px 20px;
             background: linear-gradient(135deg, #6c5ce7, #a855f7);
-            color: #fff; border: none; border-radius: 8px;
+            color: #fff;
+            border: none; border-radius: 8px;
             font-size: 0.88rem; font-weight: 600;
-            cursor: pointer; transition: all 0.25s;
+            cursor: pointer;
+            transition: all 0.25s;
             font-family: 'Inter', sans-serif;
         }
-        .gdoc-btn-publish:hover {
+        .gdoc-btn-save:hover {
             background: linear-gradient(135deg, #7c6cf7, #b865ff);
             box-shadow: 0 4px 18px rgba(168,85,247,0.45);
             transform: translateY(-1px);
@@ -69,23 +82,31 @@
             font-size: 0.88rem; font-weight: 500;
             text-decoration: none;
             display: inline-flex; align-items: center;
-            transition: all 0.2s; font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
         }
-        .gdoc-btn-cancel:hover { background: rgba(255,255,255,0.1); color: #fff; text-decoration: none; }
+        .gdoc-btn-cancel:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            text-decoration: none;
+        }
 
-        /* ── Layout ─────────────────────────────────────────────── */
+        /* ── Two-column layout ──────────────────────────────────── */
         .gdoc-layout {
-            display: flex; gap: 24px;
+            display: flex;
+            gap: 24px;
             max-width: 1200px;
             margin: 0 auto;
             padding: 32px 20px 0;
             align-items: flex-start;
         }
 
-        /* ── Sidebar ─────────────────────────────────────────────── */
+        /* ── Left sidebar (meta) ────────────────────────────────── */
         .gdoc-sidebar {
-            width: 260px; flex-shrink: 0;
-            position: sticky; top: 82px;
+            width: 260px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 82px;
         }
         .gdoc-sidebar-card {
             background: rgba(255,255,255,0.04);
@@ -96,21 +117,22 @@
         }
         .gdoc-sidebar-card h4 {
             color: rgba(255,255,255,0.4);
-            font-size: 0.7rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.1em;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             margin: 0 0 12px;
         }
-        .gdoc-field { margin-bottom: 14px; }
-        .gdoc-field:last-child { margin-bottom: 0; }
         .gdoc-field label {
             display: block;
             color: rgba(255,255,255,0.5);
-            font-size: 0.75rem; font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 600;
             margin-bottom: 6px;
-            text-transform: uppercase; letter-spacing: 0.07em;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
         }
-        .gdoc-field input[type="text"],
-        .gdoc-field input[type="file"] {
+        .gdoc-field input {
             width: 100%;
             background: rgba(255,255,255,0.06);
             border: 1px solid rgba(255,255,255,0.1);
@@ -127,22 +149,20 @@
             border-color: rgba(108,92,231,0.6);
             box-shadow: 0 0 0 3px rgba(108,92,231,0.15);
         }
-        .gdoc-field input[type="file"] { cursor: pointer; }
-
-        /* image preview */
-        #cover-preview {
-            display: none;
-            width: 100%;
-            height: 110px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-top: 10px;
+        .gdoc-cover-preview {
+            width: 100%; border-radius: 8px;
+            object-fit: cover; max-height: 130px;
             border: 1px solid rgba(255,255,255,0.08);
+            margin-top: 10px;
         }
 
-        /* ── Paper canvas ─────────────────────────────────────────── */
-        .gdoc-canvas-wrap { flex: 1; min-width: 0; }
+        /* ── Right: Google Docs paper canvas ────────────────────── */
+        .gdoc-canvas-wrap {
+            flex: 1;
+            min-width: 0;
+        }
 
+        /* the white paper feel */
         .gdoc-paper {
             background: #ffffff;
             border-radius: 4px;
@@ -151,33 +171,38 @@
             overflow: hidden;
         }
 
-        /* ── Quill toolbar ─────────────────────────────────────────── */
+        /* ── Quill toolbar — sits at top of paper ───────────────── */
         .ql-toolbar.ql-snow {
             background: #f8f9fa;
             border: none !important;
             border-bottom: 1px solid #e0e0e0 !important;
             padding: 8px 12px;
-            position: sticky; top: 62px; z-index: 100;
+            position: sticky;
+            top: 62px;
+            z-index: 100;
             border-radius: 4px 4px 0 0;
         }
         .ql-toolbar.ql-snow .ql-stroke { stroke: #444 !important; }
         .ql-toolbar.ql-snow .ql-fill   { fill:   #444 !important; }
         .ql-toolbar.ql-snow .ql-picker  { color: #444 !important; }
         .ql-toolbar.ql-snow .ql-picker-options {
-            background: #fff; border: 1px solid #ddd;
-            border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
         }
         .ql-toolbar.ql-snow .ql-picker-item { color: #333; }
         .ql-toolbar.ql-snow .ql-active .ql-stroke { stroke: #6c5ce7 !important; }
         .ql-toolbar.ql-snow .ql-active { color: #6c5ce7 !important; }
         .ql-toolbar.ql-snow button:hover .ql-stroke { stroke: #6c5ce7 !important; }
 
-        /* ── Quill editor area ─────────────────────────────────────── */
+        /* ── Quill editor area ──────────────────────────────────── */
         .ql-container.ql-snow {
             border: none !important;
             background: #ffffff;
             font-family: 'Roboto', 'Arial', sans-serif;
-            font-size: 11pt; color: #202124;
+            font-size: 11pt;
+            color: #202124;
         }
         .ql-editor {
             padding: 72px 96px;
@@ -187,9 +212,12 @@
             caret-color: #6c5ce7;
         }
         .ql-editor.ql-blank::before {
-            color: #aaa; font-style: normal;
-            font-size: 11pt; left: 96px;
+            color: #aaa;
+            font-style: normal;
+            font-size: 11pt;
+            left: 96px;
         }
+        /* Google Docs-like headings */
         .ql-editor h1 { font-size: 26pt; font-weight: 700; color: #1a1a1a; margin: 0 0 8px; line-height: 1.2; }
         .ql-editor h2 { font-size: 20pt; font-weight: 700; color: #1a1a1a; margin: 20px 0 6px; }
         .ql-editor h3 { font-size: 16pt; font-weight: 600; color: #1a1a1a; margin: 16px 0 4px; }
@@ -197,50 +225,80 @@
         .ql-editor p  { margin: 0 0 10px; }
         .ql-editor blockquote {
             border-left: 4px solid #6c5ce7;
-            padding: 8px 16px; color: #5f6368;
-            font-style: italic; background: #f8f6ff;
-            margin: 16px 0; border-radius: 0 4px 4px 0;
+            padding: 8px 16px;
+            color: #5f6368;
+            font-style: italic;
+            background: #f8f6ff;
+            margin: 16px 0;
+            border-radius: 0 4px 4px 0;
         }
         .ql-editor pre {
-            background: #f1f3f4; border-radius: 4px;
-            padding: 12px 16px; font-family: 'Courier New', monospace;
-            font-size: 10pt; color: #333; overflow-x: auto; margin: 12px 0;
+            background: #f1f3f4;
+            border-radius: 4px;
+            padding: 12px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 10pt;
+            color: #333;
+            overflow-x: auto;
+            margin: 12px 0;
         }
-        .ql-editor img { max-width: 100%; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin: 12px 0; }
+        .ql-editor img {
+            max-width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            margin: 12px 0;
+        }
         .ql-editor a { color: #1a73e8; }
 
+        /* page ruler line at top of editor content area (cosmetic) */
+        .gdoc-ruler {
+            height: 28px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex; align-items: center;
+            padding: 0 96px;
+            gap: 0;
+        }
+        .gdoc-ruler-mark {
+            width: 1px; height: 10px;
+            background: #bbb;
+            margin-right: 47px;
+        }
+
+        /* ── Mobile responsive ──────────────────────────────────── */
         @media (max-width: 900px) {
             .gdoc-layout { flex-direction: column; padding: 16px; }
             .gdoc-sidebar { width: 100%; position: static; }
             .ql-editor { padding: 40px 28px; }
+            .gdoc-ruler { padding: 0 28px; }
             .ql-editor.ql-blank::before { left: 28px; }
         }
         @media (max-width: 600px) {
             .gdoc-topbar { padding: 8px 12px; }
-            .gdoc-doc-name { display: none; }
+            .gdoc-doc-name { max-width: 140px; font-size: 0.85rem; }
         }
     </style>
 </head>
 
 <body>
-    <div><%- include('./partials/nav.ejs') %></div>
+    <%- include('./partials/nav.ejs') %>
     <div id="particles-js"></div>
 
     <!-- Sticky top bar -->
     <div class="gdoc-topbar">
         <div class="gdoc-topbar-icon">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
             </svg>
         </div>
-        <span class="gdoc-doc-name">New Blog Post</span>
+        <span class="gdoc-doc-name"><%= blog.title %></span>
         <div class="gdoc-topbar-actions">
             <a href="/" class="gdoc-btn-cancel">Cancel</a>
-            <button class="gdoc-btn-publish" id="publish-btn" form="add-form">
+            <button class="gdoc-btn-save" id="save-btn" form="edit-form">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
-                Publish Blog
+                Save Changes
             </button>
         </div>
     </div>
@@ -248,23 +306,22 @@
     <div class="gdoc-page">
         <div class="gdoc-layout">
 
-            <!-- Sidebar: title + cover image -->
+            <!-- Left sidebar: title + meta -->
             <aside class="gdoc-sidebar">
                 <div class="gdoc-sidebar-card">
                     <h4>Document Info</h4>
                     <div class="gdoc-field">
-                        <label>Blog Title *</label>
-                        <input type="text" id="sidebar-title" placeholder="Enter blog title…" autocomplete="off" required>
+                        <label>Blog Title</label>
+                        <input type="text" id="sidebar-title" value="<%= blog.title %>"
+                               placeholder="Enter title…" autocomplete="off">
                     </div>
                 </div>
+                <% if (blog.coverImageUrl) { %>
                 <div class="gdoc-sidebar-card">
-                    <h4>Cover Image *</h4>
-                    <div class="gdoc-field">
-                        <label>Upload Image</label>
-                        <input type="file" id="cover-file-input" accept="image/*">
-                    </div>
-                    <img id="cover-preview" alt="Cover preview">
+                    <h4>Cover Image</h4>
+                    <img src="<%= blog.coverImageUrl %>" class="gdoc-cover-preview" alt="Cover">
                 </div>
+                <% } %>
                 <div class="gdoc-sidebar-card" style="background:rgba(108,92,231,0.07);border-color:rgba(108,92,231,0.2);">
                     <h4 style="color:rgba(168,85,247,0.8);">Formatting Tips</h4>
                     <p style="color:rgba(255,255,255,0.45);font-size:0.78rem;margin:0;line-height:1.7;">
@@ -278,28 +335,28 @@
                 </div>
             </aside>
 
-            <!-- Paper editor -->
+            <!-- Right: paper editor -->
             <div class="gdoc-canvas-wrap">
-                <!-- Real form (hidden fields synced from sidebar) -->
-                <form action="/blog" method="post" enctype="multipart/form-data"
-                      id="add-form" onsubmit="return syncAndValidate()">
-                    <input type="hidden" name="title" id="form-title">
+                <form action="/blog/edit/<%= blog._id %>" method="POST" id="edit-form" onsubmit="return syncBody()">
+                    <!-- Hidden fields synced from sidebar inputs -->
+                    <input type="hidden" name="title" id="form-title" value="<%= blog.title %>">
                     <input type="hidden" name="body"  id="blog-body-input">
-                    <!-- actual file input synced from sidebar click -->
-                    <input type="file" name="coverImageUrl" id="form-cover" style="display:none" accept="image/*" required>
+                    <!-- Existing body data passed to JS safely -->
+                    <script type="text/plain" id="blog-body-data"><%- blog.body %></script>
                 </form>
 
                 <div class="gdoc-paper">
+                    <!-- Quill mounts here — toolbar is rendered inside by Quill -->
                     <div id="quill-editor"></div>
                 </div>
             </div>
 
-        </div>
-    </div>
+        </div><!-- /.gdoc-layout -->
+    </div><!-- /.gdoc-page -->
 
     <%- include('./partials/scripte.ejs') %>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="/particles-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
+    <script src="/particles-config.js" defer></script>
     <!-- Quill JS -->
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <script>
@@ -323,55 +380,31 @@
             }
         });
 
-        // ── Sidebar title → top bar label live ─────────────────────
+        // ── Pre-fill existing content ───────────────────────────────
+        const existingBody = document.getElementById('blog-body-data').textContent;
+        if (existingBody.trim()) {
+            quill.root.innerHTML = existingBody;
+        }
+
+        // ── Sync sidebar title → hidden form field live ─────────────
         const sidebarTitle = document.getElementById('sidebar-title');
+        const formTitle    = document.getElementById('form-title');
         const docName      = document.querySelector('.gdoc-doc-name');
         sidebarTitle.addEventListener('input', function () {
-            docName.textContent = this.value || 'New Blog Post';
+            formTitle.value = this.value;
+            docName.textContent = this.value || 'Untitled';
         });
 
-        // ── Cover image: sidebar input → real form input + preview ──
-        const coverFileInput = document.getElementById('cover-file-input');
-        const formCover      = document.getElementById('form-cover');
-        const coverPreview   = document.getElementById('cover-preview');
-
-        coverFileInput.addEventListener('change', function () {
-            if (!this.files.length) return;
-            const file = this.files[0];
-            // Transfer to the real form input via DataTransfer
-            const dt = new DataTransfer();
-            dt.items.add(file);
-            formCover.files = dt.files;
-            // Show preview
-            const reader = new FileReader();
-            reader.onload = e => {
-                coverPreview.src = e.target.result;
-                coverPreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        });
-
-        // ── Sync + validate on submit ───────────────────────────────
-        function syncAndValidate() {
-            const title = sidebarTitle.value.trim();
-            if (!title) {
-                alert('Please enter a blog title.');
-                sidebarTitle.focus();
-                return false;
-            }
+        // ── Sync on submit ──────────────────────────────────────────
+        function syncBody() {
             const html = quill.root.innerHTML;
             const text = quill.getText().trim();
             if (!text) {
-                alert('Please write some blog content before publishing.');
+                alert('Blog content cannot be empty.');
                 return false;
             }
-            if (!formCover.files.length) {
-                alert('Please select a cover image.');
-                coverFileInput.focus();
-                return false;
-            }
-            document.getElementById('form-title').value = title;
             document.getElementById('blog-body-input').value = html;
+            formTitle.value = sidebarTitle.value;
             return true;
         }
     </script>

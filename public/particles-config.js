@@ -1,39 +1,37 @@
 particlesJS("particles-js", {
   "particles": {
     "number": {
-      "value": 80,
+      "value": 50,         // Reduced from 80 → less CPU/GPU load
       "density": {
         "enable": true,
-        "value_area": 800
+        "value_area": 900
       }
     },
     "color": { "value": "#ffffff" },
     "shape": {
-      "type": "edge",
-      "stroke": { "width": 0, "color": "#000000" },
-      "polygon": { "nb_sides": 9 },
-      "image": { "src": "img/github.svg", "width": 100, "height": 100 }
+      "type": "circle",    // Simpler shape than "edge" polygon
+      "stroke": { "width": 0, "color": "#000000" }
     },
     "opacity": {
-      "value": 0.5,
+      "value": 0.4,
       "random": false,
       "anim": { "enable": false }
     },
     "size": {
-      "value": 3,
+      "value": 2.5,
       "random": true,
       "anim": { "enable": false }
     },
     "line_linked": {
       "enable": true,
-      "distance": 150,
+      "distance": 140,
       "color": "#ffffff",
-      "opacity": 0.4,
+      "opacity": 0.3,
       "width": 1
     },
     "move": {
       "enable": true,
-      "speed": 3.2,
+      "speed": 2,           // Reduced from 3.2 → smoother, lower CPU
       "direction": "none",
       "out_mode": "out"
     }
@@ -46,9 +44,9 @@ particlesJS("particles-js", {
       "resize": true
     },
     "modes": {
-      "repulse": { "distance": 200, "duration": 0.4 },
-      "push": { "particles_nb": 4 }
+      "repulse": { "distance": 150, "duration": 0.4 },
+      "push": { "particles_nb": 3 }
     }
   },
-  "retina_detect": true
+  "retina_detect": false  // Disabled — was doubling particle count on Retina screens
 });

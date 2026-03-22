@@ -1,92 +1,718 @@
 <style>
-.navbar-blurry {
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* For Safari */
-  background-color: rgba(255, 255, 255, 0.3) !important; /* Slightly white transparent background, !important to override others */
-  border-radius: 15px;
-  margin: 10px;
-  padding: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+  /* ===== Import Font ===== */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-.nav-link, .navbar-brand {
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  color: #000 !important;
-  transition: transform 0.2s ease-in-out;
-}
-
-.nav-link:hover, .navbar-brand:hover {
-  transform: scale(1.05);
-}
-
-.dropdown-menu {
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.3) !important;
-  border-radius: 10px;
-  border: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.dropdown-item {
-  color: #000 !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-  transition: background-color 0.2s ease-in-out;
-}
-
-.dropdown-item:hover {
-  background-color: rgba(255, 255, 255, 0.5) !important;
-}
-
-
-@media (max-width: 768px) {
-  .navbar-blurry {
-    margin: 5px;
-    padding: 2px;
+  /* ===== Navbar Base ===== */
+  #main-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.4s ease;
   }
-}
+
+  .navbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 14px 20px;
+    padding: 0 20px;
+    height: 60px;
+    background: rgba(10, 10, 20, 0.55);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 0 0 0.5px rgba(255, 255, 255, 0.05) inset;
+    transition: all 0.4s ease;
+  }
+
+  /* ===== Brand / Logo ===== */
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    user-select: none;
+  }
+
+  .nav-brand-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #6c5ce7, #a855f7);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .nav-brand-icon svg {
+    width: 18px;
+    height: 18px;
+    color: #fff;
+  }
+
+  .nav-brand-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #e2d9f3, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .nav-brand:hover .nav-brand-icon {
+    transform: rotate(-8deg) scale(1.1);
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+  }
+
+  /* ===== Nav Links (Desktop) ===== */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link-item a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: rgba(220, 215, 240, 0.85);
+    text-decoration: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+
+  .nav-link-item a svg {
+    width: 15px;
+    height: 15px;
+    opacity: 0.75;
+    transition: opacity 0.25s ease;
+  }
+
+  .nav-link-item a:hover {
+    color: #fff;
+    background: rgba(139, 92, 246, 0.18);
+    border-color: rgba(139, 92, 246, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .nav-link-item a:hover svg {
+    opacity: 1;
+  }
+
+  .nav-link-item a.active-link {
+    color: #c084fc;
+    background: rgba(192, 132, 252, 0.12);
+    border-color: rgba(192, 132, 252, 0.25);
+  }
+
+  /* ===== Dropdown ===== */
+  .nav-dropdown {
+    position: relative;
+  }
+
+  .nav-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 6px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    color: rgba(220, 215, 240, 0.9);
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+
+  .nav-dropdown-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #6c5ce7, #a855f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .nav-dropdown-chevron {
+    width: 14px;
+    height: 14px;
+    opacity: 0.6;
+    transition: transform 0.25s ease;
+  }
+
+  .nav-dropdown:hover .nav-dropdown-toggle,
+  .nav-dropdown.open .nav-dropdown-toggle {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.35);
+    color: #fff;
+  }
+
+  .nav-dropdown.open .nav-dropdown-chevron {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 180px;
+    background: rgba(12, 10, 25, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(255,255,255,0.05) inset;
+    padding: 6px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.97);
+    transform-origin: top right;
+    transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 100;
+  }
+
+  .nav-dropdown.open .dropdown-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  .dropdown-panel a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: rgba(220, 215, 240, 0.8);
+    transition: all 0.2s ease;
+  }
+
+  .dropdown-panel a svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0.7;
+  }
+
+  .dropdown-panel a:hover {
+    background: rgba(139, 92, 246, 0.2);
+    color: #fff;
+  }
+
+  .dropdown-panel a.danger:hover {
+    background: rgba(255, 100, 100, 0.15);
+    color: #ff8585;
+  }
+
+  .dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.07);
+    margin: 5px 0;
+  }
+
+  /* ===== Auth Buttons ===== */
+  .nav-auth {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-ghost {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: rgba(220, 215, 240, 0.82);
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.25s ease;
+  }
+
+  .btn-ghost:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .btn-primary-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(135deg, #6c5ce7, #a855f7);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    box-shadow: 0 4px 16px rgba(168, 85, 247, 0.3);
+    transition: all 0.25s ease;
+  }
+
+  .btn-primary-pill:hover {
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 22px rgba(168, 85, 247, 0.5);
+    background: linear-gradient(135deg, #7c6cf7, #b865ff);
+  }
+
+  /* ===== Hamburger (Mobile) ===== */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    transition: background 0.2s ease;
+  }
+
+  .nav-hamburger:hover {
+    background: rgba(255,255,255,0.07);
+  }
+
+  .nav-hamburger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: rgba(220, 215, 240, 0.85);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .nav-hamburger.open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  .nav-hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* ===== Mobile Menu ===== */
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(5, 4, 14, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 80px 24px 40px;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.03);
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+
+  .mobile-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: rgba(220,215,240,0.8);
+    transition: all 0.2s ease;
+  }
+
+  .mobile-close:hover { background: rgba(255,255,255,0.13); color: #fff; }
+
+  .mobile-brand {
+    position: absolute;
+    top: 22px;
+    left: 24px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #e2d9f3, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .mobile-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 280px;
+    padding: 14px 20px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: rgba(220, 215, 240, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.04);
+    transition: all 0.25s ease;
+    animation: slideUp 0.4s ease both;
+  }
+
+  .mobile-link:nth-child(2) { animation-delay: 0.05s; }
+  .mobile-link:nth-child(3) { animation-delay: 0.10s; }
+  .mobile-link:nth-child(4) { animation-delay: 0.15s; }
+  .mobile-link:nth-child(5) { animation-delay: 0.20s; }
+
+  .mobile-link svg { width: 18px; height: 18px; opacity: 0.7; }
+
+  .mobile-link:hover {
+    color: #fff;
+    background: rgba(139, 92, 246, 0.18);
+    border-color: rgba(139, 92, 246, 0.35);
+    transform: scale(1.02);
+  }
+
+  .mobile-link.mobile-primary {
+    background: linear-gradient(135deg, #6c5ce7, #a855f7);
+    border-color: rgba(168, 85, 247, 0.4);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .mobile-link.mobile-danger {
+    color: #ff8585;
+    border-color: rgba(255, 100, 100, 0.15);
+    background: rgba(255, 100, 100, 0.07);
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Scrolled State ===== */
+  #main-navbar.scrolled .navbar-inner {
+    margin: 8px 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55), 0 0 0 0.5px rgba(255,255,255,0.07) inset;
+    background: rgba(8, 7, 18, 0.75);
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .nav-links,
+    .nav-auth,
+    .nav-dropdown { display: none !important; }
+    .nav-hamburger { display: flex; }
+  }
 </style>
-<nav class="navbar navbar-expand-lg bg-transparent navbar-blurry">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">Blogify</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item ">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <% if (locals.user) { %>
-         <li class="nav-item">
-          <a class="nav-link" href="/blog/add-new">Add Blog</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/user/profile">Profile</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <%= locals.user.username %>
+
+<!-- ===== MAIN NAVBAR ===== -->
+<nav id="main-navbar" role="navigation" aria-label="Main navigation">
+  <div class="navbar-inner">
+
+    <!-- Brand -->
+    <a href="/" class="nav-brand" aria-label="Blogify Home">
+      <div class="nav-brand-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+          <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+          <path d="M2 2l7.586 7.586"/>
+          <circle cx="11" cy="11" r="2"/>
+        </svg>
+      </div>
+      <span class="nav-brand-text">Blogify</span>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <ul class="nav-links" role="list">
+      <li class="nav-link-item">
+        <a href="/" class="active-link" aria-label="Home">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          Home
+        </a>
+      </li>
+      <% if (locals.user) { %>
+        <li class="nav-link-item">
+          <a href="/blog/add-new" aria-label="Add Blog">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Write
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item " href="/user/logout">Logout</a></li>
-          </ul>
         </li>
-        <% } else { %>
-           <li class="nav-item">
-          <a class="nav-link" href="/user/signup">SignUp</a>
+        <li class="nav-link-item">
+          <a href="/user/profile" aria-label="Profile">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Profile
+          </a>
         </li>
-          <li class="nav-item">
-          <a class="nav-link" href="/user/signin">SignIn</a>
-        </li>
-        <% } %>
-      </ul>
+      <% } %>
+    </ul>
+
+    <!-- Desktop Right Side -->
+    <div style="display:flex;align-items:center;gap:8px;">
+      <% if (locals.user) { %>
+        <!-- User Dropdown -->
+        <div class="nav-dropdown" id="userDropdown">
+          <button class="nav-dropdown-toggle" onclick="toggleDropdown()" aria-haspopup="true" aria-expanded="false" aria-label="User menu">
+            <div class="nav-dropdown-avatar">
+              <%= locals.user.username ? locals.user.username.charAt(0) : 'U' %>
+            </div>
+            <span style="font-size:0.87rem;font-weight:500;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+              <%= locals.user.username %>
+            </span>
+            <svg class="nav-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="dropdown-panel" role="menu">
+            <a href="/user/profile" role="menuitem">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              My Profile
+            </a>
+            <a href="/blog/add-new" role="menuitem">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              New Blog
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="/user/logout" class="danger" role="menuitem">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+              Sign Out
+            </a>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="nav-auth">
+          <a href="/user/signin" class="btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+              <polyline points="10 17 15 12 10 7"/>
+              <line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+            Sign In
+          </a>
+          <a href="/user/signup" class="btn-primary-pill">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="8.5" cy="7" r="4"/>
+              <line x1="20" y1="8" x2="20" y2="14"/>
+              <line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+            Sign Up
+          </a>
+        </div>
+      <% } %>
+
+      <!-- Mobile Hamburger -->
+      <button class="nav-hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
+
   </div>
 </nav>
 
+<!-- ===== MOBILE MENU ===== -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+  <span class="mobile-brand">✦ Blogify</span>
+  <button class="mobile-close" onclick="toggleMobileMenu()" aria-label="Close menu">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+
+  <a href="/" class="mobile-link">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Home
+  </a>
+
+  <% if (locals.user) { %>
+    <a href="/blog/add-new" class="mobile-link mobile-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+      Write a Blog
+    </a>
+    <a href="/user/profile" class="mobile-link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      Profile
+    </a>
+    <a href="/user/logout" class="mobile-link mobile-danger">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+      Sign Out
+    </a>
+  <% } else { %>
+    <a href="/user/signin" class="mobile-link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+        <polyline points="10 17 15 12 10 7"/>
+        <line x1="15" y1="12" x2="3" y2="12"/>
+      </svg>
+      Sign In
+    </a>
+    <a href="/user/signup" class="mobile-link mobile-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="8.5" cy="7" r="4"/>
+        <line x1="20" y1="8" x2="20" y2="14"/>
+        <line x1="23" y1="11" x2="17" y2="11"/>
+      </svg>
+      Create Account
+    </a>
+  <% } %>
+</div>
+
+<!-- ===== ERROR ALERT ===== -->
 <% if (locals.error) { %>
-<div class="alert alert-danger" role="alert">
-  <%= locals.error%>
+<div style="
+  position:fixed;
+  top:90px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:998;
+  background:rgba(255,80,80,0.12);
+  border:1px solid rgba(255,80,80,0.3);
+  color:#ff9f9f;
+  padding:10px 20px;
+  border-radius:12px;
+  font-family:'Inter',sans-serif;
+  font-size:0.88rem;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  animation:slideUp 0.3s ease;
+" role="alert">
+  ⚠️ <%= locals.error %>
 </div>
 <% } %>
+
+<!-- ===== NAVBAR SCRIPTS ===== -->
+<script>
+  // Scroll effect
+  (function() {
+    var nav = document.getElementById('main-navbar');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 20) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    }, { passive: true });
+  })();
+
+  // Desktop dropdown
+  function toggleDropdown() {
+    var dd = document.getElementById('userDropdown');
+    var isOpen = dd.classList.toggle('open');
+    dd.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded', isOpen);
+  }
+
+  // Close dropdown on outside click
+  document.addEventListener('click', function(e) {
+    var dd = document.getElementById('userDropdown');
+    if (dd && !dd.contains(e.target)) {
+      dd.classList.remove('open');
+    }
+  });
+
+  // Mobile menu
+  function toggleMobileMenu() {
+    var menu = document.getElementById('mobileMenu');
+    var btn = document.getElementById('hamburgerBtn');
+    var isOpen = menu.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  // Close mobile on ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var menu = document.getElementById('mobileMenu');
+      var btn = document.getElementById('hamburgerBtn');
+      if (menu && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+    }
+  });
+</script>
