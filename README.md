@@ -69,10 +69,10 @@
 ![Home Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/poster.png)
 
 ### 📄 Blog Detail Page
-![Blog Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/images/screenshot-blog.png)
+![Blog Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/blog.png)
 
 ### ✏️ Edit Blog Page
-![Edit Blog](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/images/screenshot-edit.png)
+![Edit Blog](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/edit.png)
 
 ---
 
