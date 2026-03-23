@@ -66,7 +66,7 @@
 > Screenshots are from the live deployed application.
 
 ### 🏠 Home Page
-![Home Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/images/screenshot-home.png)
+![Home Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/poster.png)
 
 ### 📄 Blog Detail Page
 ![Blog Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/images/screenshot-blog.png)
