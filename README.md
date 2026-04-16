@@ -4,7 +4,11 @@
 
 **A modern, full-stack blog platform — write, share, and connect.**
 
+<<<<<<< HEAD
 ![Banner](public/poster.png)
+=======
+![Banner](public/hero.png)
+>>>>>>> d1a3bd6 ( change title of login)
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://blog-application-with-mern.vercel.app/)
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
