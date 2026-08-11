@@ -4,7 +4,15 @@
 
 **A modern, full-stack blog platform — write, share, and connect.**
 
+<<<<<<< HEAD
 ![Banner](public/hero.png)
+=======
+<<<<<<< HEAD
+![Banner](public/poster.png)
+=======
+![Banner](public/hero.png)
+>>>>>>> d1a3bd6 ( change title of login)
+>>>>>>> temp-save
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://blog-application-with-mern.vercel.app/)
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
@@ -66,13 +74,13 @@
 > Screenshots are from the live deployed application.
 
 ### 🏠 Home Page
-![Home Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/images/screenshot-home.png)
+![Home Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/poster.png)
 
 ### 📄 Blog Detail Page
-![Blog Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/images/screenshot-blog.png)
+![Blog Page](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/blog.png)
 
 ### ✏️ Edit Blog Page
-![Edit Blog](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/images/screenshot-edit.png)
+![Edit Blog](https://raw.githubusercontent.com/DINESHSUTHAR427/Blog_Application-with-MERN/main/public/edit.png)
 
 ---
 

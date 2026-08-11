@@ -30,8 +30,17 @@ if (process.env.NODE_ENV === "production") {
   app.set("view cache", true);
 }
 
-mongoose.connect(process.env.MONGO_URL)
-  .catch(err => console.error("DB connection error:", err));
+const dbConnect = require("./db");
+
+app.use(async (req, res, next) => {
+  try {
+    await dbConnect();
+    next();
+  } catch (err) {
+    console.error("DB connection error:", err);
+    res.status(500).send("Database connection failed");
+  }
+});
 
 // ── Performance: serve static files with 7-day browser cache ─────────
 app.use(express.static(path.join(__dirname, "public"), {
